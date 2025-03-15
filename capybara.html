@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capybara Corner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #528839;
+            --primary-dark: #0b2f19;
+            --secondary: #ffffff;
+            --accent: #8fe96b;
+            --text-dark: #2a2a2a;
+            --text-light: #f0f0f0;
+        }
+        
+        body {
+            background-color: var(--secondary);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+        }
+        
+        .navbar {
+            background-color: var(--primary-dark) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0.8rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 70%;
+        }
+        
+        .jumbotron {
+            background: linear-gradient(rgba(18, 109, 71, 0.85), rgba(60, 90, 72, 0.95)), url('https://source.unsplash.com/random/1200x600/?capybara') center/cover no-repeat;
+            color: var(--text-light);
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0;
+            position: relative;
+        }
+        
+        .jumbotron::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%23f5e6d3'/%3E%3C/svg%3E");
+            background-size: cover;
+            z-index: 1;
+        }
+        
+        .cta-btn {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background-color: #daa55b;
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .fact-box {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fact-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--primary);
+        }
+        
+        .fact-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .fact-box h3 {
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .capy-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+        
+        .capy-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .capy-card .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            transition: all 0.8s ease;
+        }
+        
+        .capy-card:hover .card-img-top {
+            transform: scale(1.1);
+        }
+        
+        .capy-card .card-img-wrapper {
+            overflow: hidden;
+        }
+        
+        .capy-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .capy-card .card-title {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .mood-section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 3rem;
+        }
+        
+        .mood-btn {
+            border-radius: 30px;
+            padding: 0.6rem 1.5rem;
+            margin: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-width: 2px;
+        }
+        
+        .mood-btn:hover, .mood-btn.active {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .capybara-mood {
+            background-color: var(--secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .newsletter-section h3 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 1.5rem auto 0;
+            position: relative;
+        }
+        
+        .newsletter-form .form-control {
+            border-radius: 30px;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .newsletter-form .btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            font-weight: 500;
+            border: none;
+        }
+        
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -70px;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%233c5a48'/%3E%3C/svg%3E");
+            background-size: cover;
+            transform: rotate(180deg);
+        }
+        
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            color: var(--text-light);
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Animation for facts */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .animate-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Loading animation */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .page-loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-capybara {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            animation: bounce 1.2s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #212121;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .fact-box {
+            background-color: #2d2d2d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        body.dark-mode .capy-card {
+            background-color: #2d2d2d;
+            box-shadow: 0 5px 15px rgba(110, 92, 92, 0.2);
+        }
+        
+        body.dark-mode .capy-card .card-body {
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .mood-section {
+            background-color: #2d2d2d;
+        }
+        
+        body.dark-mode .capybara-mood {
+            background-color: #1a1a1a;
+        }
+        
+        /* Theme toggle */
+        .theme-toggle {
+            cursor: pointer;
+            width: 45px;
+            height: 24px;
+            background-color: #000000;
+            border-radius: 30px;
+            position: relative;
+            margin-left: 15px;
+			display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            background-color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .theme-toggle {
+            background-color: var(--accent);
+        }
+        
+        body.dark-mode .theme-toggle::before {
+            transform: translateX(21px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .jumbotron {
+                padding: 4rem 0;
+            }
+            
+            .fact-box, .capy-card {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .jumbotron {
+                padding: 3rem 0;
+            }
+            
+            .cta-btn {
+                padding: 0.7rem 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <div class="loader-capybara">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="#8D6E63" d="M256 128c-70.7 0-128 57.3-128 128v128h256V256c0-70.7-57.3-128-128-128z"/>
+                <circle fill="#5D4037" cx="192" cy="240" r="16"/>
+                <circle fill="#5D4037" cx="320" cy="240" r="16"/>
+                <path fill="#8D6E63" d="M256 320c-26.5 0-48-21.5-48-48h96c0 26.5-21.5 48-48 48z"/>
+                <rect fill="#5D4037" x="208" y="128" width="32" height="64"/>
+                <rect fill="#5D4037" x="272" y="128" width="32" height="64"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">🌿 Capybara Corner</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#facts">Facts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#mood">Mood Tracker</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="d-flex align-items-center">
+                            <div id="theme-toggle" class="theme-toggle" title="Toggle dark mode"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="jumbotron" id="home">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">Welcome to Capybara Corner!</h1>
+            <p class="lead mb-4">The internet's coziest spot for the world's largest and friendliest rodents</p>
+            <button class="cta-btn" id="greeting-btn">
+                <i class="fas fa-paw me-2"></i>Get Capybara Greeting
+            </button>
+        </div>
+    </div>
+
+    <!-- Facts Section -->
+    <div class="container my-5 text-center" id="facts">
+        <h2 class="text-center section-title">Fascinating Capybara Facts</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="fact-box animate-in">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-users fa-2x me-3" style="color: var(--primary)"></i>
+                        <h3 class="mb-0">Social Creatures</h3>
+                    </div>
+                    <p>Capybaras are highly social animals that live in groups of 10-20 individuals. They're known for their friendly disposition and often allow other animals to sit on them!</p>
+                    <small class="text-muted"><i class="fas fa-info-circle me-1"></i> Fun fact: Capybaras can recognize and remember individuals in their social groups.</small>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="fact-box animate-in" data-delay="200">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-water fa-2x me-3" style="color: var(--primary)"></i>
+                        <h3 class="mb-0">Semi-Aquatic</h3>
+                    </div>
+                    <p>These amazing creatures are excellent swimmers! They can hold their breath underwater for up to five minutes and often sleep in water with just their noses poking out.</p>
+                    <small class="text-muted"><i class="fas fa-info-circle me-1"></i> Fun fact: Their partially webbed feet help them navigate through water with ease.</small>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="fact-box animate-in" data-delay="400">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-weight fa-2x me-3" style="color: var(--primary)"></i>
+                        <h3 class="mb-0">Gentle Giants</h3>
+                    </div>
+                    <p>Weighing up to 150 pounds, capybaras are the largest rodents in the world. Despite their size, they're known for being gentle and docile.</p>
+                    <small class="text-muted"><i class="fas fa-info-circle me-1"></i> Fun fact: Their closest relatives are guinea pigs and rock cavies.</small>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="fact-box animate-in" data-delay="600">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-volume-up fa-2x me-3" style="color: var(--primary)"></i>
+                        <h3 class="mb-0">Vocal Communicators</h3>
+                    </div>
+                    <p>Capybaras make various sounds to communicate, including purrs, whistles, clicks, and barks. They're quite the chatterboxes!</p>
+                    <small class="text-muted"><i class="fas fa-info-circle me-1"></i> Fun fact: Baby capybaras make a unique sound similar to a bird's chirp.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="container my-5 text-center" id="gallery">
+        <h2 class="text-center section-title">Capybara Gallery</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card capy-card h-100">
+                    <div class="card-img-wrapper">
+                        <img src="/relaxing capybara.jpg" class="card-img-top" alt="Capybara relaxing">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Relaxing Capybara</h5>
+                        <p class="card-text">Just chilling by the water, as capybaras do best.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="badge bg-success py-2 px-3">Relaxed</span>
+                            <button class="btn btn-sm btn-outline-primary view-btn">
+                                <i class="fas fa-eye me-1"></i> View Larger
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card capy-card h-100">
+                    <div class="card-img-wrapper">
+                        <img src="/capybara with bird.png" class="card-img-top" alt="Capybara with friends">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Friendly Capybara</h5>
+                        <p class="card-text">Making friends with birds who like to perch on their back.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="badge bg-primary py-2 px-3">Social</span>
+                            <button class="btn btn-sm btn-outline-primary view-btn">
+                                <i class="fas fa-eye me-1"></i> View Larger
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card capy-card h-100">
+                    <div class="card-img-wrapper">
+                        <img src="/hungry capybara.jpg" class="card-img-top" alt="Capybara eating">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Hungry Capybara</h5>
+                        <p class="card-text">Enjoying some fresh grass and plants, their favorite food.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="badge bg-warning text-dark py-2 px-3">Hungry</span>
+                            <button class="btn btn-sm btn-outline-primary view-btn">
+                                <i class="fas fa-eye me-1"></i> View Larger
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary load-more-btn">
+                <i class="fas fa-plus-circle me-2"></i>Load More Capybaras
+            </button>
+        </div>
+    </div>
+
+    <!-- Mood Tracker Section -->
+    <div class="container my-5 text-center" id="mood text">
+        <h2 class="text-center section-title align">What's Your Capybara Mood Today?</h2>
+        <div class="mood-section">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="btn-group d-flex flex-wrap justify-content-center">
+                        <button class="btn btn-outline-success mood-btn" data-mood="Relaxed">
+                            <i class="fas fa-hot-tub me-2"></i>Relaxed
+                        </button>
+                        <button class="btn btn-outline-primary mood-btn" data-mood="Friendly">
+                            <i class="fas fa-handshake me-2"></i>Friendly
+                        </button>
+                        <button class="btn btn-outline-info mood-btn" data-mood="Curious">
+                            <i class="fas fa-search me-2"></i>Curious
+                        </button>
+                        <button class="btn btn-outline-secondary mood-btn" data-mood="Sleepy">
+                            <i class="fas fa-bed me-2"></i>Sleepy
+                        </button>
+                        <button class="btn btn-outline-warning mood-btn" data-mood="Hungry">
+                            <i class="fas fa-utensils me-2"></i>Hungry
+                        </button>
+                    </div>
+                    <div class="capybara-mood mt-4" id="mood-display">
+                        <i class="fas fa-smile me-2"></i>Choose your capybara mood!
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button class="btn btn-outline-secondary share-mood-btn">
+                    <i class="fas fa-share-alt me-2"></i>Share Your Mood
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="container my-5">
+        <div class="newsletter-section">
+            <div class="text-center">
+                <h3><i class="fas fa-envelope-open-text me-2"></i>Join the Capybara Club!</h3>
+                <p>Get weekly updates on capybara facts, photos, and more!</p>
+                <div class="newsletter-form">
+                    <div class="position-relative">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email">
+                        <button class="btn" type="button">Subscribe</button>
+                    </div>
+                    <div class="form-text text-light mt-2">We respect your privacy. Unsubscribe at any time.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fun Facts Carousel -->
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4">Did You Know?</h3>
+                <div id="factCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-center">
+                                <div class="text-center mx-4">
+                                    <i class="fas fa-leaf fa-3x mb-3" style="color: var(--primary)"></i>
+                                    <p>Capybaras are herbivores and eat mainly grasses and aquatic plants.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="d-flex justify-content-center">
+                                <div class="text-center mx-4">
+                                    <i class="fas fa-clock fa-3x mb-3" style="color: var(--primary)"></i>
+                                    <p>Capybaras can live up to 8-10 years in the wild and 12 years in captivity.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="d-flex justify-content-center">
+							<div class="text-center mx-4">
+                                    <i class="fas fa-baby fa-3x mb-3" style="color: var(--primary)"></i>
+                                    <p>Baby capybaras are called pups, and they can swim within hours of being born!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#factCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#factCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">About Capybara Corner</h5>
+                    <p>A passionate community dedicated to sharing the joy and wonder of these amazing creatures with the world.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="#facts" class="text-light text-decoration-none">Facts</a></li>
+                        <li><a href="#gallery" class="text-light text-decoration-none">Gallery</a></li>
+                        <li><a href="#mood" class="text-light text-decoration-none">Mood Tracker</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Connect With Us</h5>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <p class="mt-2">Share your love for capybaras!</p>
+                </div>
+            </div>
+            <hr class="my-4" style="background-color: rgba(255,255,255,0.1)">
+            <div class="text-center">
+                <p>© 2025 Capybara Corner | Made with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for capybaras</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Modal for image preview -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Capybara Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" class="img-fluid" alt="Capybara">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="downloadBtn">
+                        <i class="fas fa-download me-2"></i>Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Wait for page to load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.page-loader').classList.add('loaded');
+            }, 500);
+        });
+
+        // Initialize interactive elements when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update active nav link
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Greeting button
+            document.getElementById('greeting-btn').addEventListener('click', function() {
+                const greetings = [
+                    "Squeaky hello from a capybara! 🌿",
+                    "Capybaras send you peaceful vibes! ✨",
+                    "A capybara would definitely share their watermelon with you! 🍉",
+                    "Capybaras think you're awesome! 👏",
+                    "You've been blessed by the capybara of good fortune! 🍀"
+                ];
+                const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+                
+                // Create toast notification instead of alert
+                const toastContainer = document.createElement('div');
+                toastContainer.style.position = 'fixed';
+                toastContainer.style.top = '20px';
+                toastContainer.style.right = '20px';
+                toastContainer.style.zIndex = '9999';
+                
+                const toast = document.createElement('div');
+                toast.className = 'toast show';
+                toast.role = 'alert';
+                toast.ariaLive = 'assertive';
+                toast.ariaAtomic = 'true';
+                toast.style.backgroundColor = 'var(--primary)';
+                toast.style.color = 'white';
+                toast.style.minWidth = '300px';
+                
+                toast.innerHTML = `
+                    <div class="toast-header">
+                        <strong class="me-auto">Capybara Says</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${randomGreeting}
+                    </div>
+                `;
+                
+                toastContainer.appendChild(toast);
+                document.body.appendChild(toastContainer);
+                
+                // Remove toast after 5 seconds
+                setTimeout(() => {
+                    toastContainer.remove();
+                }, 5000);
+                
+                // Play a gentle sound
+                const audio = new Audio('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js');
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log('Audio play prevented'));
+            });
+            
+            // Mood tracker
+            const moodButtons = document.querySelectorAll('.mood-btn');
+            const moodDisplay = document.getElementById('mood-display');
+            
+            moodButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const mood = this.getAttribute('data-mood');
+                    const messages = {
+                        'Relaxed': "<i class='fas fa-hot-tub me-2'></i>You're feeling chill like a capybara soaking in hot springs!",
+                        'Friendly': "<i class='fas fa-handshake me-2'></i>You're in a social mood, ready to make friends like a capybara!",
+                        'Curious': "<i class='fas fa-search me-2'></i>You're exploring new things like a curious capybara sniffing around!",
+                        'Sleepy': "<i class='fas fa-bed me-2'></i>You're ready for a nap, just like a capybara in the afternoon sun!",
+                        'Hungry': "<i class='fas fa-utensils me-2'></i>You're craving snacks like a capybara munching on grass!"
+                    };
+                    
+                    // Add animation to mood change
+                    moodDisplay.style.opacity = '0';
+                    setTimeout(() => {
+                        moodDisplay.innerHTML = messages[mood];
+                        moodDisplay.style.opacity = '1';
+                    }, 300);
+                    
+                    // Reset all buttons
+                    moodButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Highlight selected button
+                    this.classList.add('active');
+                    
+                    // Save mood to session storage
+                    sessionStorage.setItem('capybaraMood', mood);
+                });
+            });
+            
+            // Share mood button
+            document.querySelector('.share-mood-btn').addEventListener('click', function() {
+                const currentMood = Array.from(moodButtons).find(btn => btn.classList.contains('active'));
+                
+                if (currentMood) {
+                    const mood = currentMood.getAttribute('data-mood');
+                    
+                    // Create shareable text
+                    const shareText = `I'm feeling ${mood} like a capybara today! What's your capybara mood? Find out at Capybara Corner!`;
+                    
+                    // If Web Share API is available
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'My Capybara Mood',
+                            text: shareText,
+                            url: window.location.href
+                        }).catch(err => {
+                            // Fallback - create "copy to clipboard" functionality
+                            copyToClipboard(shareText);
+                        });
+                    } else {
+                        // Fallback - create "copy to clipboard" functionality
+                        copyToClipboard(shareText);
+                    }
+                } else {
+                    alert('Please select a mood first!');
+                }
+            });
+            
+            function copyToClipboard(text) {
+                // Create temporary element
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                
+                // Show notification
+                alert('Mood copied to clipboard! Share it with your friends.');
+            }
+            
+            // Make gallery cards interactive
+            const capyCards = document.querySelectorAll('.capy-card');
+            const viewButtons = document.querySelectorAll('.view-btn');
+            
+            viewButtons.forEach((button, index) => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openModal(capyCards[index]);
+                });
+                
+                capyCards[index].addEventListener('click', function() {
+                    openModal(this);
+                });
+            });
+            
+            function openModal(card) {
+                const title = card.querySelector('.card-title').textContent;
+                const imgSrc = card.querySelector('.card-img-top').src;
+                
+                // Set modal content
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalImage').src = imgSrc;
+                
+                // Open modal
+                const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+                imageModal.show();
+            }
+            
+            // Download button in modal
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                const img = document.getElementById('modalImage');
+                const link = document.createElement('a');
+                link.href = img.src;
+                link.download = 'capybara.jpg';
+                link.click();
+            });
+            
+            // Animate elements when they come into view
+            const animatedElements = document.querySelectorAll('.animate-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('show');
+                        }, entry.target.dataset.delay || 0);
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+            
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Back to top button
+            const backToTopBtn = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('active');
+                } else {
+                    backToTopBtn.classList.remove('active');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Load more button
+            document.querySelector('.load-more-btn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+                this.disabled = true;
+                
+                // Simulate loading time
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check-circle me-2"></i>All Loaded!';
+                    
+                    // After 2 seconds, revert button
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-plus-circle me-2"></i>Load More Capybaras';
+                        this.disabled = false;
+                    }, 2000);
+                }, 1500);
+            });
+            
+            // Dark mode toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            
+            // Check for saved theme preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                body.classList.add('dark-mode');
+            }
+            
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+            });
+            
+            // Active navbar changes on scroll
+            window.addEventListener('scroll', function() {
+                let current = '';
+                const sections = document.querySelectorAll('div[id]');
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= (sectionTop - 100)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Check if mood was previously saved
+            const savedMood = sessionStorage.getItem('capybaraMood');
+			if (savedMood) {
+                const moodBtn = Array.from(moodButtons).find(btn => btn.getAttribute('data-mood') === savedMood);
+                if (moodBtn) {
+                    moodBtn.click();
+                }
+            }
+            
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Enable carousel
+            const carouselElement = document.querySelector('#factCarousel');
+            const carousel = new bootstrap.Carousel(carouselElement, {
+                interval: 5000,
+                wrap: true
+            });
+        });
+    </script>
+</body>
+</html>
